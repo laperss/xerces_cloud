@@ -1,1 +1,2 @@
-# xerces_kth2
+# xerces cloud computing application
+Course in software development, module on cloud computing. 
