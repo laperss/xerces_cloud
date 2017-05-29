@@ -49,7 +49,6 @@ From what I interpreted the requirements, this is a depiction of the intended sy
 
 
 ## Closed system
-----------------
 * In a  closed system model, it is assumed that there is some fixed number of users, who use the system forever.
 * This number of users is typically called the multiprogramming level (MPL) and denoted by N.
 * Each of these N users repeats these 2 steps, indefinitely: (a) submit a job, (b) receive the response and then “think” for some amountof time.
