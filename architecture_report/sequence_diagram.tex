@@ -1,0 +1,84 @@
+\documentclass[tikz, border={-5.75pt 0 0 0}]{standalone}
+\usetikzlibrary{shapes}
+\usepackage[underline=false]{pgf-umlsd}
+\usepackage{xparse}
+
+\RenewDocumentCommand{\mess}{O{0}mmmO{dashed}}{%
+	\stepcounter{seqlevel}
+	\path
+	(#2)+(0,-\theseqlevel*\unitfactor-0.7*\unitfactor) node (mess from) {};
+	\addtocounter{seqlevel}{#1}
+	\path
+	(#4)+(0,-\theseqlevel*\unitfactor-0.7*\unitfactor) node (mess to) {};
+	\draw[->,#5] (mess from) -- (mess to) node[midway, above]
+	{#3};
+	
+	\node (#3 from) at (mess from) {};
+	\node (#3 to) at (mess to) {};
+}
+
+\NewDocumentCommand{\messbreak}{O{0}mmm}{
+	\stepcounter{seqlevel}
+	\path
+	(#2)+(0,-\theseqlevel*\unitfactor-0.7*\unitfactor) node (mess from) {};
+	\addtocounter{seqlevel}{#1}
+	\path
+	(#4)+(0,-\theseqlevel*\unitfactor-0.7*\unitfactor) node (mess to) {};
+	\draw[->] (mess from) -- node [draw, -, cross out, sloped, line width=.5ex, minimum width=1ex, minimum height=1ex, thick, black] {} (mess to) node[midway, above]
+	{#3};
+	
+	\node (#3 from) at (mess from) {};
+	\node (#3 to) at (mess to) {};
+}
+
+\begin{document}
+\begin{sequencediagram}[font=\scriptsize]
+	\def\unitfactor{0.7}
+	\tikzstyle{inststyle}=[rectangle, draw, anchor=west, fill=white]
+	
+	\newthread{client}{Client}
+	\newinst[3]{frontend}{Frontend}
+	\newinst[3]{backend}{Backend}
+	
+	\begin{call}{client}{1. ConvertREQ}{frontend}{5. ConvertACK}
+		\begin{call}{frontend}{2. ResourceREQ}{backend}{4. ResourceACK}
+			\begin{call}{backend}{3. Reserve Resources}{backend}{}
+			\end{call}
+		\end{call}
+	\end{call}
+	
+	\begin{call}{client}{6. SourceVideoTransfer}{backend}{8. OuputVideoTransfer}
+	\begin{call}{backend}{7. Video Conversion}{backend}{}
+	\end{call}
+	\end{call}
+	
+
+	
+	
+%	\begin{sdblock}{Phase $1$}{}
+%		\mess{sensor}{HRQT}{controller1}
+%		\mess{controller1}{HREP}{sensor}
+%		\mess{sensor}{HRQT}{controller2}
+%		\mess{controller2}{HREP}{sensor}
+%		\mess{sensor}{HRQT}{actuator}
+%		\mess{actuator}{HREP}{sensor}
+%	\end{sdblock}
+%	
+%	\begin{sdblock}{Phase $2$}{}
+%		\mess{sensor}{Start Sending $y_k$}{controller2}[>=latex', solid]
+%		\mess{controller2}{CRQT}{controller1}
+%		\mess{controller1}{CTRF}{controller2}
+%		\mess{controller2}{Start Sending $u_k$}{actuator}[>=latex', solid]
+%	\end{sdblock}
+%	
+%	\begin{sdblock}{Phase $3$}{}
+%		\mess{actuator}{CVAL}{sensor}
+%		\messbreak{sensor}{Stop Sending $y_k$}{controller1}
+%		\messbreak{controller1}{Stop Sending $u_k$}{actuator}
+%		\mess{sensor}{HSUC}{controller1}
+%		\mess{sensor}{HSUC}{controller2}
+%		\mess{sensor}{HSUC}{actuator}
+%	\end{sdblock}
+	
+\end{sequencediagram}
+\end{document}
