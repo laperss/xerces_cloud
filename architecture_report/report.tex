@@ -15,7 +15,7 @@ The different components of the system can be found in
 Figure~\ref{fig:system_diagram}, where there are three principal
 components:
 \begin{enumerate}
-\item Wordload generator
+\item Workload generator
 \item Service
 \item Monitor
 \end{enumerate}
@@ -40,7 +40,7 @@ components:
 A schematic representation of the architecture can be found in
 Figure~\ref{fig:arch_diagram}. The clients connect to the webserver,
 which is a nginx webserver, and the webserver produces a job message which it
-put in the distributed queue, RabbitMQ. A job message consists of:
+puts in the distributed queue, RabbitMQ. A job message consists of:
 \begin{enumerate}
 \item Client ID, for the webserver to identify the client.
 \item Additional information about the request.
@@ -48,8 +48,8 @@ put in the distributed queue, RabbitMQ. A job message consists of:
 A VM consumes a message from the queue, and sends a confirmation
 message to the client, via the webserver acting as a reverse proxy
 server now. The client gets the confirmation and an URI to where the
-client can use the HTTP POST command to send his input video the
-video. The converter gets the input video, process the video, and
+client can use the HTTP POST command to send his input video. 
+The converter gets the input video, process the video, and
 sends it back to the client, via the webserver. This process is
 depicted in Figure~\ref{fig:sequence_diagram} shows the sequence
 diagram, which consists of the following messages:
@@ -71,7 +71,7 @@ diagram, which consists of the following messages:
   \label{fig:sequence_diagram}
 \end{figure}
 
-The openstack senlin module survey and monitors the load on the
+The OpenStack Senlin module surveys and monitors the load on the
 converter nodes. Senlin can use different policies to scale up and
 down the number of running vm. The senlin module would also act as the
 monitor in the component scheme.
@@ -95,7 +95,7 @@ The following interfaces are implemented:
 
 \begin{enumerate}
 \item REST HTTP API between client and webserver.
-\item HTTP XML between nginx distributed queue.
+\item HTTP XML between nginx distributed queue (STOMP).
 \item Openstack between converter VM and senlin.
 \end{enumerate}
 
@@ -107,19 +107,19 @@ The following interfaces are implemented:
 \item RabbitMQ
 \item Senlin
 \item mencoder
-\item python wrapper mencoder
+\item Python wrapper for mencoder
 \end{enumerate}
 
 \section*{Scalability and Robustness}
 
 \begin{itemize}
-\item Only three vms are constant:
+\item Three vms are assumed to be always-available:
   \begin{enumerate}
   \item webserver
   \item work distributor
   \item autoscaling
   \end{enumerate}
-\item The converter nodes can be resized on the go.
+\item The converter node VMs can be scaled up or down depending on the need.
 \end{itemize}
 
 
