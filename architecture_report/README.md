@@ -41,11 +41,28 @@ From what I interpreted the requirements, this is a depiction of the intended sy
 
 ![System overview](system_diagram.png)
 
+# Architecture
+--------------
+
+The architecture:
+
+![System overview](arch_diagram.png)
+
+* No files are stored in the service.
+* The requests are relayed from the webserver to the work distributor, a distributed message queue.
+* A job consists of three parts:
+  1, Send the video from the client to the worker, through proxy server.
+  2, the worker process the video
+  3, the worker sends back the converted video to the client, through proxy server
+* The senlin module scales the number of running VMs, based on predefined policies.
+
 
 # Definitions
 -------------
 * **Think time**: ?
 * **Closed system**: how does it take input?
+* **vertically scale up**: increase overall application capacity by increasing the resources within existing nodes. (add more hardware).
+* **horizontally scale out**: increase overall application capacity by adding nodes.
 
 
 ## Closed system
