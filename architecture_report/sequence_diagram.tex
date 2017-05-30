@@ -52,33 +52,5 @@
 	\end{call}
 	\end{call}
 	
-
-	
-	
-%	\begin{sdblock}{Phase $1$}{}
-%		\mess{sensor}{HRQT}{controller1}
-%		\mess{controller1}{HREP}{sensor}
-%		\mess{sensor}{HRQT}{controller2}
-%		\mess{controller2}{HREP}{sensor}
-%		\mess{sensor}{HRQT}{actuator}
-%		\mess{actuator}{HREP}{sensor}
-%	\end{sdblock}
-%	
-%	\begin{sdblock}{Phase $2$}{}
-%		\mess{sensor}{Start Sending $y_k$}{controller2}[>=latex', solid]
-%		\mess{controller2}{CRQT}{controller1}
-%		\mess{controller1}{CTRF}{controller2}
-%		\mess{controller2}{Start Sending $u_k$}{actuator}[>=latex', solid]
-%	\end{sdblock}
-%	
-%	\begin{sdblock}{Phase $3$}{}
-%		\mess{actuator}{CVAL}{sensor}
-%		\messbreak{sensor}{Stop Sending $y_k$}{controller1}
-%		\messbreak{controller1}{Stop Sending $u_k$}{actuator}
-%		\mess{sensor}{HSUC}{controller1}
-%		\mess{sensor}{HSUC}{controller2}
-%		\mess{sensor}{HSUC}{actuator}
-%	\end{sdblock}
-	
 \end{sequencediagram}
 \end{document}
