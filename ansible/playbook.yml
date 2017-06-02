@@ -1,0 +1,39 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: true
+  gather_facts: false
+  pre_tasks:
+  - name: Install Python 2
+    raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+    register: output
+    changed_when:
+    - output.stdout != ""
+    - output.stdout != "\r\n"
+  - name: Install aptitude
+    apt: name=aptitude state=latest
+
+  tasks:
+
+  - name: Gathering Facts
+    setup:
+
+  - name: Add hostname to /etc/hosts
+    lineinfile: dest=/etc/hosts
+                regexp='^127\.0\.0\.1'
+                line='127.0.0.1 localhost {{ansible_hostname}}'
+
+  - name: Add Ericsson hostname in /etc/hosts
+    lineinfile: dest=/etc/hosts
+                insertafter='^127\.0\.0\.1'
+                line='129.192.68.4 xerces.ericsson.net'
+
+  - name: Update and upgrade packages
+    become: true
+    apt: upgrade=yes update_cache=yes
+
+  - name: Install Mencoder
+    apt: name=mencoder state=latest
+
+  - name: Install Python 3
+    apt: name=python3 state=latest
