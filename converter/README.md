@@ -8,6 +8,11 @@ Run the server by running
 ```
 python3 server.py
 ```
+If you want to exit the terminal without killing it run
+```
+nohup python3 server.py &
+```
+
 ## Demo
 A demo is running on
 ```
