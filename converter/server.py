@@ -16,7 +16,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-def random_filename(size=6, chars=string.ascii_uppercase + string.digits):
+def random_string(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 def convert_video(source, dest):
@@ -31,7 +31,8 @@ def main():
         input = request.files['file']
         if input and allowed_file(input.filename):
             _, input_ext = os.path.splitext(input.filename)
-            input_name = "input_%s" % (random_filename())
+            random_string = random_string()
+            input_name = "input_%s" % (random_string)
 
             # Saving input file
             print("Saving input file")
@@ -39,7 +40,7 @@ def main():
             input.save(input_path)
             
             # Convert file
-            output_name = "output_%s" % (random_filename())
+            output_name = "output_%s" % (random_string)
             output_ext = '.avi'
             output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_name + output_ext)
             convert_video(input_path, output_path)
