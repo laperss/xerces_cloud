@@ -31,8 +31,8 @@ def main():
         input = request.files['file']
         if input and allowed_file(input.filename):
             _, input_ext = os.path.splitext(input.filename)
-            random_string = random_string()
-            input_name = "input_%s" % (random_string)
+            random_str = random_string()
+            input_name = "input_%s" % (random_str)
 
             # Saving input file
             print("Saving input file")
@@ -40,7 +40,7 @@ def main():
             input.save(input_path)
             
             # Convert file
-            output_name = "output_%s" % (random_string)
+            output_name = "output_%s" % (random_str)
             output_ext = '.avi'
             output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_name + output_ext)
             convert_video(input_path, output_path)
