@@ -37,3 +37,6 @@
 
   - name: Install Python 3
     apt: name=python3 state=latest
+
+  - name: Install Python Flask
+    apt: name=python3-flask state=latest
