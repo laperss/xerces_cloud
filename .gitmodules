@@ -1,0 +1,3 @@
+[submodule "VM-automatic-deploy"]
+	path = VM-automatic-deploy
+	url = git@github.com:laperss/VM-automatic-deploy.git
