@@ -37,7 +37,7 @@ ansible-playbook -s playbook.yml
 Add the flag `-vvv` for more debugging information.
 
 ### Sources
-[Ansible Documentation](http://docs.ansible.com/)
-[An Ansible Tutorial](https://serversforhackers.com/an-ansible-tutorial) 
-[Get Ansible to work on bare Ubuntu 16.04 without python 2.7](https://gist.github.com/gwillem/4ba393dceb55e5ae276a87300f6b8e6f)
-[List of Ansible pre-defined variables](https://stackoverflow.com/questions/18839509/where-can-i-get-a-list-of-ansible-pre-defined-variables)
+- [Ansible Documentation](http://docs.ansible.com/)
+- [An Ansible Tutorial](https://serversforhackers.com/an-ansible-tutorial) 
+- [Get Ansible to work on bare Ubuntu 16.04 without python 2.7](https://gist.github.com/gwillem/4ba393dceb55e5ae276a87300f6b8e6f)
+- [List of Ansible pre-defined variables](https://stackoverflow.com/questions/18839509/where-can-i-get-a-list-of-ansible-pre-defined-variables)
