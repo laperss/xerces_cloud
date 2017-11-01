@@ -30,7 +30,6 @@ def main():
     sub_context = zmq.Context()
     sub_socket = sub_context.socket(zmq.PULL)
     sub_socket.bind("tcp://*:%s" % SUB_PORT)
-    sub_socket.setsockopt_string(zmq.SUBSCRIBE, "")
 
     taskid = 1
     if request.method == 'POST':
