@@ -29,11 +29,10 @@
     become: true
     apt: upgrade=yes update_cache=yes
 
-  - name: Install Mencoder
-    apt: name=mencoder state=latest
-
-  - name: Install Python 3
-    apt: name=python3 state=latest
-
-  - name: Install Python Flask
-    apt: name=python3-flask state=latest
+  - name: Install list of packages
+    apt: name={{item}} state=latest
+    with_items:
+         - mencoder
+         - python3
+         - python3-flask
+         - python3-pip
