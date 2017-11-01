@@ -58,7 +58,7 @@ def main():
             print("[send]\tDelegate task (" + vm + ") to " + vmip + "...")
             print("[send]\tSend file to worker...")
             os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path +
-                      " ubuntu@" + vmip + ":/home/ubuntu/")
+                      " ubuntu@" + vmip + ":/home/ubuntu/ > /dev/null")
             done = "done"
             pub_socket.send_string(done)
             print("[send]\tNotify file transfer complete...")

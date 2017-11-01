@@ -34,6 +34,7 @@ while True:
         if ip == WORKER_IP:
             # Wait until file is transfered
             message = sub_socket.recv()
+            print("[recv]\tReceived file from master...")
 
             # Convert video
             print("[local]\tConverting video file...")
@@ -42,7 +43,7 @@ while True:
             convert_video("/home/ubuntu/" + input_file, "/home/ubuntu/" + output_file)
             # Transfer video file
             os.system("scp -i /home/ubuntu/xerces_keypair.pem " + "/home/ubuntu/" + output_file +
-                      " ubuntu@" + MASTER_IP + ":/home/ubuntu/")
+                      " ubuntu@" + MASTER_IP + ":/home/ubuntu/ > /dev/null")
             print("[send]\tCopy file to master...")
 
             # Delete
