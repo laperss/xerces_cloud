@@ -4,19 +4,17 @@
 All the necessary dependencies can be installed using the Ansible playbook.
 
 ## Running
-Run the server by running 
+Run on the master VM
 ```
-python3 server.py
+python3 master.py
 ```
-If you want to exit the terminal without killing it run
+Run workers on one or more vms
 ```
-nohup python3 server.py &
+python3 worker.py
 ```
-
-## Demo
-A demo is running on
+Run clients.py on local computer to generate traffic
 ```
-http://129.192.68.50:5000
+python3 clients.py
 ```
 
 ## Video Files
