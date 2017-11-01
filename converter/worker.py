@@ -15,7 +15,7 @@ sub_socket.setsockopt_string(zmq.SUBSCRIBE, "")
 
 pub_context = zmq.Context()
 pub_socket = pub_context.socket(zmq.PUSH)
-pub_context.connect("tcp://" + MASTER_IP +":%s" % PUB_PORT)
+pub_socket.connect("tcp://" + MASTER_IP +":%s" % PUB_PORT)
 
 def convert_video(source, dest):
     cmd = """mencoder %s -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=3000
