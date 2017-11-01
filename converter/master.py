@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-import os, shlex, random, string, binascii, shutil
+import os, shlex, random, string, binascii, shutil, zmq, sys, time
 from flask import Flask, request, redirect, url_for, render_template, send_file, session
 from subprocess import DEVNULL, STDOUT, call
 
 ALLOWED_EXTENSIONS = set(['mkv'])
+PUB_PORT = "5556"
+SUB_PORT = "5557"
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'tmp'
@@ -19,14 +21,18 @@ def allowed_file(filename):
 def random_string(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
-def convert_video(source, dest):
-    cmd = """mencoder %s -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=3000
-             -oac copy -o %s""" % (source, dest)
-    print("Converting video file")
-    call(shlex.split(cmd), stdout=DEVNULL, stderr=STDOUT)
-
 @app.route("/", methods=['GET', 'POST'])
 def main():
+    pub_context = zmq.Context()
+    pub_socket = pub_context.socket(zmq.PUB)
+    pub_socket.bind("tcp://*:%s" % PUB_PORT)
+
+    sub_context = zmq.Context()
+    sub_socket = sub_context.socket(zmq.SUB)
+    sub_socket.connect("tcp://localhost:%s" % SUB_PORT)
+    sub_socket.setsockopt_string(zmq.SUBSCRIBE, "")
+
+    taskid = 1
     if request.method == 'POST':
         input = request.files['file']
         if input and allowed_file(input.filename):
@@ -38,13 +44,27 @@ def main():
             print("Saving input file")
             input_path = os.path.join(app.config['UPLOAD_FOLDER'], input_name + input_ext)
             input.save(input_path)
-            
-            # Convert file
-            output_name = "output_%s" % (random_str)
-            output_ext = '.avi'
-            output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_name + output_ext)
-            convert_video(input_path, output_path)
-            session['output_path'] = output_path
+
+            # Publish task
+            task = "task " + str(taskid)
+            pub_socket.send_string(task)
+            print("sent: ", task)
+
+            # Wait for response
+            res = sub_socket.recv()
+            data = res.split()
+            vmid = int(data[3])
+            print("recv: ", res.decode("utf-8"))
+
+            # Delegate task
+            vm = "vm " + str(vmid)
+            pub_socket.send_string(vm)
+            vm_ip = "192.168.50.8"
+            os.system("scp " + input_path + "ubuntu@" + vm_ip + "/home/ubuntu/video" + input_ext)
+            print("sent: ", vm)
+            taskid += 1
+
+            # session['output_path'] = output_path
 
             # Delete input file
             print("Deleting input file")
