@@ -28,8 +28,8 @@ def main():
     pub_socket.bind("tcp://*:%s" % PUB_PORT)
 
     sub_context = zmq.Context()
-    sub_socket = sub_context.socket(zmq.SUB)
-    sub_socket.connect("tcp://localhost:%s" % SUB_PORT)
+    sub_socket = sub_context.socket(zmq.PULL)
+    sub_socket.bind("tcp://*:%s" % SUB_PORT)
     sub_socket.setsockopt_string(zmq.SUBSCRIBE, "")
 
     taskid = 1
