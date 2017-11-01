@@ -1,4 +1,4 @@
-import zmq, random, sys, time, shlex, socket
+import os, zmq, random, sys, time, shlex, socket
 from subprocess import DEVNULL, STDOUT, call
 
 MASTER_IP = "192.168.50.14"
