@@ -31,42 +31,41 @@ def main():
     sub_socket = sub_context.socket(zmq.PULL)
     sub_socket.bind("tcp://*:%s" % SUB_PORT)
 
-    taskid = 1
     if request.method == 'POST':
         input = request.files['file']
         if input and allowed_file(input.filename):
+            # Saving input file
             _, input_ext = os.path.splitext(input.filename)
             random_str = random_string()
             input_file = "input_%s.mkv" % (random_str)
-
-            # Saving input file
-            print("Saving input file")
             input_path = os.path.join(app.config['UPLOAD_FOLDER'], input_file)
             input.save(input_path)
+            print("[local]\tSaving input file " + input_file + "...")
 
             # Publish task
+            taskid = randint(0, 100)
             task = "task " + str(taskid)
             pub_socket.send_string(task)
-            print("sent: ", task)
+            print("[send]\tPublish task (" + task + ") to workers...")
 
             # Wait for response
             res = sub_socket.recv()
             data = res.split()
             vmip = res.split()[3].decode("utf-8")
-            print("recv: ", res.decode("utf-8"))
+            print("[recv]\tReceive response (" + res.decode("utf-8") + ") from " + vmip + "...")
 
             # Delegate task
             vm = "vm " + str(vmip) + " file " + input_file
             pub_socket.send_string(vm)
+            print("[send]\tDelegate task (" + vm + ") to " + vmip + "...")
             os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path +
                       " ubuntu@" + vmip + ":/home/ubuntu/")
-            print("sent: ", vm)
-            taskid += 1
+            print("[send] Copy file to worker...")
 
             # session['output_path'] = output_path
 
             # Delete input file
-            print("Deleting input file")
+            print("[local]\tDeleting input file " + input_file + "...")
             os.remove(input_path)
 
             return redirect(url_for('done'))

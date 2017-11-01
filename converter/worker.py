@@ -22,30 +22,29 @@ pub_socket.connect("tcp://" + MASTER_IP +":%s" % PUB_PORT)
 def convert_video(source, dest):
     cmd = """mencoder %s -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=3000
              -oac copy -o %s""" % (source, dest)
-    print("Converting video file")
     call(shlex.split(cmd), stdout=DEVNULL, stderr=STDOUT)
 
 while True:
     # Wait for published message
     message = sub_socket.recv()
-    print("recv: ", message.decode("utf-8"))
     if "vm" in str(message):
+        print("[recv]\tReceiving job (" + message.decode("utf-8") + ") from master...")
         ip = message.split()[1].decode("utf-8")
         input_path = message.split()[3].decode("utf-8")
         if ip == WORKER_IP:
             # Wait until file is transfered
             time.sleep(5)
             # Convert video
-            print("Converting video file")
+            print("[local]\tConverting video file...")
             output_path = "output.avi"
             convert_video("/home/ubuntu/" + input_path, output_path)
-            print("Done")
             # Transfer video file
     else:
+        print("[recv]\tReceiving task (" + message.decode("utf-8") + ") from master...")
         taskid = int(message.split()[1])
         # Sleep a random duration before replying
         time.sleep(random.uniform(0, 1))
         # Send taskid and IP back
         taskreply = "task " + str(taskid) + " vm " + WORKER_IP
-        print("sent: ", taskreply)
         pub_socket.send_string(taskreply)
+        print("[send]\tReply to task (" + taskreply + ") from master...")
