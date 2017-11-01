@@ -36,10 +36,13 @@ while True:
             time.sleep(5)
             # Convert video
             print("[local]\tConverting video file...")
-            output_file = "output.avi"
+            filename, input_ext = os.path.splitext(input_file)
+            output_file = filename + ".avi"
             convert_video("/home/ubuntu/" + input_file, "/home/ubuntu/" + output_file)
             # Transfer video file
-            # TODO
+            os.system("scp -i /home/ubuntu/xerces_keypair.pem " + "/home/ubuntu/" + output_file +
+                      " ubuntu@" + MASTER_IP + ":/home/ubuntu/")
+            print("[send] Copy file to master...")
 
             # Delete
             print("[local]\tDeleting input file " + input_file + "...")

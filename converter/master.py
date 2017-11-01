@@ -35,7 +35,7 @@ def main():
         input = request.files['file']
         if input and allowed_file(input.filename):
             # Saving input file
-            _, input_ext = os.path.splitext(input.filename)
+            filename, input_ext = os.path.splitext(input.filename)
             random_str = random_string()
             input_file = "input_%s.mkv" % (random_str)
             input_path = os.path.join(app.config['UPLOAD_FOLDER'], input_file)
@@ -62,7 +62,9 @@ def main():
                       " ubuntu@" + vmip + ":/home/ubuntu/")
             print("[send] Copy file to worker...")
 
-            # session['output_path'] = output_path
+            # Wait for converted file
+            time.sleep(30)
+            session['output_path'] = "/home/ubuntu/" + filename + ".avi"
 
             # Delete input file
             print("[local]\tDeleting input file " + input_file + "...")
