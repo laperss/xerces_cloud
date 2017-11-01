@@ -5,11 +5,12 @@ from threading import Thread
 server = 'http://129.192.68.34:5000'
 testfile = "test.mkv"
 
+# Generate random string to obtain unique filename
 def random_string(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+# Download example video file if testfile does not exist
 def download_file():
-    # Download example video file if testfile does not exist
     if not os.path.isfile(testfile):
         print("Downloading example video file")
         url = 'http://jell.yfish.us/media/jellyfish-3-mbps-hd-h264.mkv'
@@ -17,6 +18,7 @@ def download_file():
         with open(testfile, "wb") as handle:
             shutil.copyfileobj(response.raw, handle)
 
+# Simulate a user by submitting a convertion request
 def user(id):
     s = requests.session()
     print("[" + str(id) + "]" + "Upload file")
@@ -36,6 +38,7 @@ def user(id):
 if __name__ == "__main__":
     download_file()
 
+    # Randomly generate users
     userid = 0
     while True:
         # Spawn thread
