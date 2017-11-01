@@ -52,15 +52,14 @@ def main():
             # Wait for response
             res = sub_socket.recv()
             data = res.split()
-            vmid = int(data[3])
+            vmip = res.split()[3].decode("utf-8")
             print("recv: ", res.decode("utf-8"))
 
             # Delegate task
-            vm = "vm " + str(vmid) + " file " + input_file
+            vm = "vm " + str(vmip) + " file " + input_file
             pub_socket.send_string(vm)
-            vm_ip = "192.168.50.8"
             os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path +
-                      " ubuntu@" + vm_ip + ":/home/ubuntu/")
+                      " ubuntu@" + vmip + ":/home/ubuntu/")
             print("sent: ", vm)
             taskid += 1
 
