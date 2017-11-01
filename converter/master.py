@@ -64,7 +64,6 @@ def main():
             print("[send]\tNotify file transfer complete...")
 
             # Wait for converted file
-            time.sleep(30)
             session['output_path'] = "/home/ubuntu/" + filename + ".avi"
 
             # Delete input file
@@ -86,4 +85,3 @@ def file():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
-
