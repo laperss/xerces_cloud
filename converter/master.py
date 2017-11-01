@@ -37,11 +37,11 @@ def main():
         if input and allowed_file(input.filename):
             _, input_ext = os.path.splitext(input.filename)
             random_str = random_string()
-            input_name = "input_%s" % (random_str)
+            input_file = "input_%s.mkv" % (random_str)
 
             # Saving input file
             print("Saving input file")
-            input_path = os.path.join(app.config['UPLOAD_FOLDER'], input_name + input_ext)
+            input_path = os.path.join(app.config['UPLOAD_FOLDER'], input_file)
             input.save(input_path)
 
             # Publish task
@@ -56,10 +56,11 @@ def main():
             print("recv: ", res.decode("utf-8"))
 
             # Delegate task
-            vm = "vm " + str(vmid)
+            vm = "vm " + str(vmid) + " file " + input_file
             pub_socket.send_string(vm)
             vm_ip = "192.168.50.8"
-            os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path + " ubuntu@" + vm_ip + "/home/ubuntu/video" + input_ext)
+            os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path +
+                      " ubuntu@" + vm_ip + "/home/ubuntu/")
             print("sent: ", vm)
             taskid += 1
 

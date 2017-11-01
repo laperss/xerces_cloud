@@ -27,12 +27,16 @@ while True:
     print("recv: ", message.decode("utf-8"))
     if "vm" in str(message):
         id = int(message.split()[1])
+        input_path = message.split()[3].decode("utf-8")
         if id == VMID:
+            # Wait until file is transfered
+            time.sleep(5)
             # Convert video
             print("Converting video file")
             output_path = "output.avi"
-            convert_video("/home/ubuntu/video.mkv", output_path)
+            convert_video("/home/ubuntu/" + input_path, output_path)
             print("Done")
+            # Transfer video file
     else:
         taskid = int(message.split()[1])
         # Sleep a random duration before replying
