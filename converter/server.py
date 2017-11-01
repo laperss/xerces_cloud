@@ -64,5 +64,5 @@ def file():
     return send_file(output_path, attachment_filename='converted%s' % output_ext, as_attachment=True)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
 
