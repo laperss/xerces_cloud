@@ -59,7 +59,7 @@ def main():
             vm = "vm " + str(vmid)
             pub_socket.send_string(vm)
             vm_ip = "192.168.50.8"
-            os.system("scp -i /home/ubuntu/xerces_keypair.pem" + input_path + "ubuntu@" + vm_ip + "/home/ubuntu/video" + input_ext)
+            os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path + " ubuntu@" + vm_ip + "/home/ubuntu/video" + input_ext)
             print("sent: ", vm)
             taskid += 1
 
