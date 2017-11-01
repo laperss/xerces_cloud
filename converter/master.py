@@ -3,9 +3,11 @@ import os, shlex, random, string, binascii, shutil, zmq, sys, time
 from flask import Flask, request, redirect, url_for, render_template, send_file, session
 from subprocess import DEVNULL, STDOUT, call
 
-ALLOWED_EXTENSIONS = set(['mkv'])
+# Set port for publisher ans subcriber
 PUB_PORT = "5556"
 SUB_PORT = "5557"
+
+# Set up zeroMQs
 pub_context = zmq.Context()
 pub_socket = pub_context.socket(zmq.PUB)
 pub_socket.bind("tcp://*:%s" % PUB_PORT)
@@ -13,6 +15,7 @@ sub_context = zmq.Context()
 sub_socket = sub_context.socket(zmq.PULL)
 sub_socket.bind("tcp://*:%s" % SUB_PORT)
 
+# Set up Flask
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'tmp'
 app.config['SECRET_KEY'] =  binascii.hexlify(os.urandom(24))
@@ -22,8 +25,9 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1] in set(['mkv'])
 
+# Generate random string to obtain unique filename
 def random_string(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
@@ -40,7 +44,7 @@ def main():
             input.save(input_path)
             print("[local]\tSaving input file " + input_file + "...")
 
-            # Publish task
+            # Publish task to all workers
             taskid = random.randint(0, 100)
             task = "task " + str(taskid)
             pub_socket.send_string(task)
@@ -52,7 +56,7 @@ def main():
             vmip = res.split()[3].decode("utf-8")
             print("[recv]\tReceive response (" + res.decode("utf-8") + ") from " + vmip + "...")
 
-            # Delegate task
+            # Delegate task to the fastest worker
             vm = "vm " + str(vmip) + " file " + input_file
             pub_socket.send_string(vm)
             print("[send]\tDelegate task (" + vm + ") to " + vmip + "...")
@@ -63,7 +67,7 @@ def main():
             pub_socket.send_string(done)
             print("[send]\tNotify file transfer complete...")
 
-            # Wait for converted file
+            # Wait for converted file to be transfered
             message = sub_socket.recv()
             print("[recv]\tReceived file from worker...")
             session['output_path'] = "/home/ubuntu/" + filename + ".avi"
