@@ -1,7 +1,5 @@
-import zmq
-import random
-import sys
-import time
+import zmq, random, sys, time
+from subprocess import DEVNULL, STDOUT, call
 
 VMID = 1
 SUB_PORT = "5556"
