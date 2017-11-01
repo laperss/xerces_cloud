@@ -6,6 +6,12 @@ from subprocess import DEVNULL, STDOUT, call
 ALLOWED_EXTENSIONS = set(['mkv'])
 PUB_PORT = "5556"
 SUB_PORT = "5557"
+pub_context = zmq.Context()
+pub_socket = pub_context.socket(zmq.PUB)
+pub_socket.bind("tcp://*:%s" % PUB_PORT)
+sub_context = zmq.Context()
+sub_socket = sub_context.socket(zmq.PULL)
+sub_socket.bind("tcp://*:%s" % SUB_PORT)
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'tmp'
@@ -23,14 +29,6 @@ def random_string(size=6, chars=string.ascii_uppercase + string.digits):
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
-    pub_context = zmq.Context()
-    pub_socket = pub_context.socket(zmq.PUB)
-    pub_socket.bind("tcp://*:%s" % PUB_PORT)
-
-    sub_context = zmq.Context()
-    sub_socket = sub_context.socket(zmq.PULL)
-    sub_socket.bind("tcp://*:%s" % SUB_PORT)
-
     if request.method == 'POST':
         input = request.files['file']
         if input and allowed_file(input.filename):
@@ -60,7 +58,7 @@ def main():
             print("[send]\tDelegate task (" + vm + ") to " + vmip + "...")
             os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path +
                       " ubuntu@" + vmip + ":/home/ubuntu/")
-            print("[send] Copy file to worker...")
+            print("[send]Copy file to worker...")
 
             # Wait for converted file
             time.sleep(30)
@@ -84,5 +82,5 @@ def file():
     return send_file(output_path, attachment_filename='converted%s' % output_ext, as_attachment=True)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
 
