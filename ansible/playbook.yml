@@ -23,7 +23,7 @@
   - name: Add Ericsson hostname in /etc/hosts
     lineinfile: dest=/etc/hosts
                 insertafter='^127\.0\.0\.1'
-                line=129.192.68.4 xerces.ericsson.net'
+                line='129.192.68.4 xerces.ericsson.net'
 
   - name: Update and upgrade packages
     become: true
