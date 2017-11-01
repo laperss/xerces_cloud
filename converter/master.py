@@ -43,7 +43,7 @@ def main():
             print("[local]\tSaving input file " + input_file + "...")
 
             # Publish task
-            taskid = randint(0, 100)
+            taskid = random.randint(0, 100)
             task = "task " + str(taskid)
             pub_socket.send_string(task)
             print("[send]\tPublish task (" + task + ") to workers...")
