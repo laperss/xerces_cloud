@@ -15,10 +15,6 @@
   - name: Gathering Facts
     setup:
 
-  - name: get my public IP
-    ipify_facts:
-    register: public_ip
-
   - name: Add hostname to /etc/hosts
     lineinfile: dest=/etc/hosts
                 regexp='^127\.0\.0\.1'
@@ -27,7 +23,7 @@
   - name: Add Ericsson hostname in /etc/hosts
     lineinfile: dest=/etc/hosts
                 insertafter='^127\.0\.0\.1'
-                line='{{ipify_public_ip}} xerces.ericsson.net'
+                line=129.192.68.4 xerces.ericsson.net'
 
   - name: Update and upgrade packages
     become: true
