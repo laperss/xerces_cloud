@@ -6,7 +6,7 @@ import time
 VMID = 1
 SUB_PORT = "5556"
 PUB_PORT = "5557"
-MASTER_IP = "192.168.50.7"
+MASTER_IP = "192.168.50.14"
 
 sub_context = zmq.Context()
 sub_socket = sub_context.socket(zmq.SUB)
