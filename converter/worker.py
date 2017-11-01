@@ -1,4 +1,4 @@
-import zmq, random, sys, time
+import zmq, random, sys, time, shlex
 from subprocess import DEVNULL, STDOUT, call
 
 VMID = 1
