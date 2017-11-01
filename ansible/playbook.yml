@@ -1,20 +1,16 @@
----
 - hosts: all
   remote_user: ubuntu
   become: true
   gather_facts: false
   pre_tasks:
-  - name: Install Python 2
+  - name: Install python 2 for Ansible
     raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
     register: output
-    changed_when:
-    - output.stdout != ""
-    - output.stdout != "\r\n"
+    changed_when: output.stdout != ""
   - name: Install aptitude
     apt: name=aptitude state=latest
 
   tasks:
-
   - name: Gathering Facts
     setup:
 
