@@ -58,7 +58,7 @@ def main():
             print("[send]\tDelegate task (" + vm + ") to " + vmip + "...")
             os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path +
                       " ubuntu@" + vmip + ":/home/ubuntu/")
-            print("[send]Copy file to worker...")
+            print("[send]\tCopy file to worker...")
 
             # Wait for converted file
             time.sleep(30)
