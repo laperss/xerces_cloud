@@ -30,15 +30,22 @@ while True:
     if "vm" in str(message):
         print("[recv]\tReceiving job (" + message.decode("utf-8") + ") from master...")
         ip = message.split()[1].decode("utf-8")
-        input_path = message.split()[3].decode("utf-8")
+        input_file = message.split()[3].decode("utf-8")
         if ip == WORKER_IP:
             # Wait until file is transfered
             time.sleep(5)
             # Convert video
             print("[local]\tConverting video file...")
-            output_path = "output.avi"
-            convert_video("/home/ubuntu/" + input_path, output_path)
+            output_file = "output.avi"
+            convert_video("/home/ubuntu/" + input_file, "/home/ubuntu/" + output_file)
             # Transfer video file
+            # TODO
+
+            # Delete
+            print("[local]\tDeleting input file " + input_file + "...")
+            os.remove("/home/ubuntu/" + input_file)
+            print("[local]\tDeleting output file " + output_file + "...")
+            os.remove("/home/ubuntu/" + output_file)
     else:
         print("[recv]\tReceiving task (" + message.decode("utf-8") + ") from master...")
         taskid = int(message.split()[1])
