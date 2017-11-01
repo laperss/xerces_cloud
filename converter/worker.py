@@ -2,6 +2,10 @@ import zmq, random, sys, time, shlex, socket
 from subprocess import DEVNULL, STDOUT, call
 
 MASTER_IP = "192.168.50.14"
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
 WORKER_IP = get_ip_address() 
 
 # Set up zeroMQ
@@ -14,11 +18,6 @@ sub_socket.setsockopt_string(zmq.SUBSCRIBE, "")
 pub_context = zmq.Context()
 pub_socket = pub_context.socket(zmq.PUSH)
 pub_socket.connect("tcp://" + MASTER_IP +":%s" % PUB_PORT)
-
-def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
 
 def convert_video(source, dest):
     cmd = """mencoder %s -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=3000
