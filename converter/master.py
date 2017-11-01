@@ -64,6 +64,8 @@ def main():
             print("[send]\tNotify file transfer complete...")
 
             # Wait for converted file
+            message = sub_socket.recv()
+            print("[recv]\tReceived file from worker...")
             session['output_path'] = "/home/ubuntu/" + filename + ".avi"
 
             # Delete input file

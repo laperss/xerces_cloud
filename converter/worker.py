@@ -46,6 +46,11 @@ while True:
                       " ubuntu@" + MASTER_IP + ":/home/ubuntu/ > /dev/null")
             print("[send]\tCopy file to master...")
 
+            # Notify master
+            done = "done"
+            pub_socket.send_string(done)
+            print("[send]\tNotify file transfer complete...")
+
             # Delete
             print("[local]\tDeleting input file " + input_file + "...")
             os.remove("/home/ubuntu/" + input_file)
