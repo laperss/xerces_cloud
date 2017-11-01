@@ -56,9 +56,12 @@ def main():
             vm = "vm " + str(vmip) + " file " + input_file
             pub_socket.send_string(vm)
             print("[send]\tDelegate task (" + vm + ") to " + vmip + "...")
+            print("[send]\tSend file to worker...")
             os.system("scp -i /home/ubuntu/xerces_keypair.pem " + input_path +
                       " ubuntu@" + vmip + ":/home/ubuntu/")
-            print("[send]\tCopy file to worker...")
+            done = "done"
+            pub_socket.send_string(done)
+            print("[send]\tNotify file transfer complete...")
 
             # Wait for converted file
             time.sleep(30)

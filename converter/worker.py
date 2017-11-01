@@ -33,7 +33,8 @@ while True:
         input_file = message.split()[3].decode("utf-8")
         if ip == WORKER_IP:
             # Wait until file is transfered
-            time.sleep(5)
+            message = sub_socket.recv()
+
             # Convert video
             print("[local]\tConverting video file...")
             filename, input_ext = os.path.splitext(input_file)
