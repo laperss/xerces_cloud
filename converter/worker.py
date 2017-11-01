@@ -42,7 +42,7 @@ while True:
             # Transfer video file
             os.system("scp -i /home/ubuntu/xerces_keypair.pem " + "/home/ubuntu/" + output_file +
                       " ubuntu@" + MASTER_IP + ":/home/ubuntu/")
-            print("[send] Copy file to master...")
+            print("[send]\tCopy file to master...")
 
             # Delete
             print("[local]\tDeleting input file " + input_file + "...")
